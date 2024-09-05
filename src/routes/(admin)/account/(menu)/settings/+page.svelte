@@ -8,6 +8,7 @@
 
   export let data
   let { profile, user } = data
+  console.log(data)
 </script>
 
 <svelte:head>

@@ -1,5 +1,7 @@
 import { redirect } from "@sveltejs/kit"
 import type { LayoutServerLoad } from "./$types"
+import type { SupabaseClient, User } from "@supabase/supabase-js"
+import type { Database } from "../../../DatabaseDefinitions"
 
 export const load: LayoutServerLoad = async ({
   locals: { supabase, safeGetSession },
@@ -16,6 +18,7 @@ export const load: LayoutServerLoad = async ({
     .select(`*`)
     .eq("id", user?.id)
     .single()
+
 
   return { session, profile, cookies: cookies.getAll() }
 }
