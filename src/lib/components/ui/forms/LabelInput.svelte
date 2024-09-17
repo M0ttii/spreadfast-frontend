@@ -10,9 +10,9 @@
 	export let placeholder: string
 </script>
 
-<Form.Field {form} name={form_name}>
+<Form.Field {form} name={form_name} class="space-y-1">
 	<Form.Control let:attrs>
-		<Form.Label>{label}</Form.Label>
-		<Input class="" {...attrs} {placeholder} />
+		<Form.Label class="font-inter leading-3">{label}</Form.Label>
+		<Input class="rounded-lg" {...attrs} {placeholder} />
 	</Form.Control>
 </Form.Field>
