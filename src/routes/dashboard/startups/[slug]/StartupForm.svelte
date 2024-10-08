@@ -17,6 +17,10 @@
 	import LabelWithDesc from "$lib/components/ui/forms/LabelWithDesc.svelte"
 	import { crossfade, fade, fly } from "svelte/transition"
 	import { quintOut } from "svelte/easing"
+	import LabelSelect from "$lib/components/ui/forms/LabelSelect.svelte"
+	import LabelDatePicker from "$lib/components/ui/forms/LabelDatePicker.svelte"
+	import LabelTextArea from "$lib/components/ui/forms/LabelTextArea.svelte"
+	import { categoryContent } from "./categoryContent"
 
 	export let data: SuperValidated<Infer<FormSchema>>
 
@@ -28,6 +32,7 @@
 	export let activeStep = 0
 	let selectedItem = writable("1")
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const showNextStep = writable(false)
 
 	const [send, receive] = crossfade({
@@ -46,6 +51,12 @@
 			}
 		},
 	})
+
+	const pricingContent = [
+		{ value: "free", label: "Free" },
+		{ value: "paid", label: "Paid" },
+		{ value: "freemium", label: "Freemium" },
+	]
 </script>
 
 <div class="flex w-full">
@@ -56,6 +67,62 @@
 					class="flex flex-col space-y-7 w-full"
 					in:receive={{ key: "step0" }}
 					out:send={{ key: "step0" }}
+				>
+					<div class="flex flex-col space-y-2 w-full">
+						<Label class="font-semibold font-inter text-base">
+							General Information
+						</Label>
+						<div class="grid grid-cols-2 gap-4 w-full">
+							<LabelInput
+								{form}
+								form_name="firstname"
+								label="First Name"
+								placeholder="Enter your first name"
+							/>
+							<LabelInput
+								{form}
+								form_name="lastname"
+								label="Last Name"
+								placeholder="Enter your last name"
+							/>
+							<LabelInput
+								{form}
+								form_name="email"
+								label="Email"
+								placeholder="Enter your email"
+							/>
+							<LabelInput
+								{form}
+								form_name="role"
+								label="Your Role in the Company"
+								placeholder="Enter your role"
+							/>
+							<LabelInput
+								{form}
+								form_name="city"
+								label="Company City"
+								placeholder="Enter your city"
+							/>
+							<LabelInput
+								{form}
+								form_name="country"
+								label="Company Country"
+								placeholder="Enter your country"
+							/>
+							<LabelInput
+								{form}
+								form_name="twitter"
+								label="Personal Twitter"
+								placeholder="Enter your twitter"
+							/>
+						</div>
+					</div>
+				</div>
+			{:else if activeStep === 1}
+				<div
+					class="flex flex-col space-y-2 w-full"
+					in:receive={{ key: "step1" }}
+					out:send={{ key: "step1" }}
 				>
 					<div class="flex flex-col space-y-5">
 						<div class="flex flex-col space-y-3">
@@ -77,95 +144,104 @@
 							</GroupSelectWrapper>
 						</div>
 					</div>
-					<div class="flex flex-col space-y-2 w-full">
-						<Label class="font-semibold font-inter text-base">
-							General Information
-						</Label>
-						<div class="grid grid-cols-2 gap-4 w-full">
-							<LabelInput
-								{form}
-								form_name="name"
-								label="Name"
-								placeholder="Enter your name"
-							/>
-							<LabelInput
-								{form}
-								form_name="email"
-								label="Email"
-								placeholder="Enter your email"
-							/>
-							<LabelInput
-								{form}
-								form_name="phone"
-								label="Phone"
-								placeholder="Enter your phone number"
-							/>
-							<LabelInput
-								{form}
-								form_name="address"
-								label="Address"
-								placeholder="Enter your address"
-							/>
-							<LabelInput
-								{form}
-								form_name="city"
-								label="City"
-								placeholder="Enter your city"
-							/>
-							<LabelInput
-								{form}
-								form_name="state"
-								label="State"
-								placeholder="Enter your state"
-							/>
-						</div>
-					</div>
-				</div>
-			{:else if activeStep === 1}
-				<div
-					class="flex flex-col space-y-2 w-full"
-					in:receive={{ key: "step1" }}
-					out:send={{ key: "step1" }}
-				>
-					<Label class="font-semibold font-inter text-base">
-						Other Information
-					</Label>
 					<div class="grid grid-cols-2 gap-4 w-full">
 						<LabelInput
 							{form}
-							form_name="name"
-							label="Name"
-							placeholder="Enter your name"
+							form_name="url"
+							label="URL"
+							placeholder="Enter your startup's url"
 						/>
 						<LabelInput
 							{form}
-							form_name="email"
-							label="Email"
-							placeholder="Enter your email"
+							form_name="affiliate"
+							label="Affiliate Link"
+							placeholder="Enter your affiliate link"
 						/>
 						<LabelInput
 							{form}
-							form_name="phone"
-							label="Phone"
-							placeholder="Enter your phone number"
+							form_name="ctwitter"
+							label="Company Twitter"
+							placeholder="Enter your company's twitter"
 						/>
+						<LabelSelect
+							{form}
+							form_name="pricing_select"
+							label="Pricing Type"
+							content="Pricing"
+							contents={pricingContent}
+						></LabelSelect>
+						<LabelDatePicker
+							{form}
+							form_name="launch_date"
+							label="Launch Date"
+						></LabelDatePicker>
 						<LabelInput
 							{form}
-							form_name="address"
-							label="Address"
-							placeholder="Enter your address"
+							form_name="starting_price"
+							label="Starting Price"
+							placeholder="Enter the starting price"
 						/>
+					</div>
+				</div>
+			{:else if activeStep === 2}
+				<div
+					class="flex flex-col space-y-2 w-full"
+					in:receive={{ key: "step2" }}
+					out:send={{ key: "step2" }}
+				>
+					<div class="grid grid-cols-2 gap-4 w-full">
+						<div class="col-span-2">
+							<LabelInput
+								{form}
+								form_name="tagline"
+								label="Tagline"
+								placeholder="Enter your startup's tagline"
+							/>
+							<LabelTextArea
+								{form}
+								form_name="short_description"
+								label="Short Description"
+								value="s"
+								placeholder="Short description of your startup"
+							></LabelTextArea>
+							<LabelTextArea
+								{form}
+								form_name="long_description"
+								label="Long Description"
+								value="s"
+								placeholder="Long description of your startup"
+							></LabelTextArea>
+						</div>
+						<LabelSelect
+							{form}
+							form_name="category_select"
+							label="Category"
+							content="Category"
+							contents={categoryContent}
+						></LabelSelect>
 						<LabelInput
 							{form}
-							form_name="city"
-							label="City"
-							placeholder="Enter your city"
+							form_name="ctwitter"
+							label="Company Twitter"
+							placeholder="Enter your company's twitter"
 						/>
+						<LabelSelect
+							{form}
+							form_name="pricing_select"
+							label="Pricing Type"
+							content="Pricing"
+							contents={pricingContent}
+						></LabelSelect>
+						<LabelDatePicker
+							{form}
+							form_name="launch_date"
+							label="Launch Date"
+						></LabelDatePicker>
 						<LabelInput
 							{form}
-							form_name="state"
-							label="State"
-							placeholder="Enter your state"
+							form_name="starting_price"
+							label="Starting Price"
+							placeholder="Enter the starting price"
 						/>
 					</div>
 				</div>
