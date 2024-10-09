@@ -6,8 +6,15 @@
 	import StartupForm from "./StartupForm.svelte"
 	import type { PageDataProp, Step } from "./types"
 	import Stepper from "$lib/components/ui/forms/Stepper.svelte"
+	import { superForm } from "sveltekit-superforms"
+	import { zodClient } from "sveltekit-superforms/adapters"
+	import { formSchema } from "./schema"
 
 	export let data: PageData & PageDataProp
+
+	const form = superForm(data.form, {
+		validators: zodClient(formSchema),
+	})
 
 	const steps: Step[] = [
 		{ title: "Personal Information" },
@@ -32,6 +39,11 @@
 	function prevStep() {
 		activeStep -= 1
 	}
+
+	function printResult() {
+		form.submit()
+		console.log(data.form)
+	}
 </script>
 
 <div class="flex flex-col w-full">
@@ -44,21 +56,28 @@
 				<Label class="text-3xl font-semibold text-black/80 font-inter"
 					>Configuration</Label
 				>
-				<StartupForm data={data.form} {activeStep}></StartupForm>
+				<StartupForm {form} data={data.form} {activeStep}></StartupForm>
 			</div>
 			<div class="flex w-full justify-between">
 				<div class="flex">
 					<Button on:click={prevStep} variant="outline">Back</Button>
 				</div>
 				<div class="flex">
-					<Button
-						on:click={nextStep}
-						class="bg-[#9139F6] font-inter font-semibold py-3 px-4"
-						>Continue <ChevronRight
-							strokeWidth={2.5}
-							class="w-[1.2rem] ml-1 h-[1.2rem] mt-0.5"
-						></ChevronRight></Button
-					>
+					{#if activeStep === 3}
+						<Button
+							class="bg-[#9139F6] font-inter font-semibold py-3 px-4"
+							on:click={printResult}>Finish</Button
+						>
+					{:else}
+						<Button
+							on:click={nextStep}
+							class="bg-[#9139F6] font-inter font-semibold py-3 px-4"
+							>Continue <ChevronRight
+								strokeWidth={2.5}
+								class="w-[1.2rem] ml-1 h-[1.2rem] mt-0.5"
+							></ChevronRight></Button
+						>
+					{/if}
 				</div>
 			</div>
 		</div>

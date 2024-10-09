@@ -8,6 +8,7 @@
 	export let label: string
 	export let content: string
 	export let contents: SelectItem[] = []
+	export let customClass: string = ""
 
 	interface SelectItem {
 		value: string
@@ -22,7 +23,7 @@
 			<Select.Trigger class="w-[180px]">
 				<Select.Value placeholder="Select a {content}" />
 			</Select.Trigger>
-			<Select.Content>
+			<Select.Content class={customClass}>
 				<Select.Group>
 					<Select.Label>{content}</Select.Label>
 					{#each contents as fruit}

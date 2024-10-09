@@ -20,13 +20,12 @@
 	import LabelSelect from "$lib/components/ui/forms/LabelSelect.svelte"
 	import LabelDatePicker from "$lib/components/ui/forms/LabelDatePicker.svelte"
 	import LabelTextArea from "$lib/components/ui/forms/LabelTextArea.svelte"
-	import { categoryContent } from "./categoryContent"
+	import { categoryContent } from "./categoryContents"
+	import LabelFileUpload from "$lib/components/ui/forms/LabelFileUpload.svelte"
 
 	export let data: SuperValidated<Infer<FormSchema>>
 
-	const form = superForm(data, {
-		validators: zodClient(formSchema),
-	})
+	export let form
 
 	const { form: formData, enhance } = form
 	export let activeStep = 0
@@ -213,6 +212,7 @@
 							></LabelTextArea>
 						</div>
 						<LabelSelect
+							customClass="overflow-y-auto max-h-72"
 							{form}
 							form_name="category_select"
 							label="Category"
@@ -221,28 +221,57 @@
 						></LabelSelect>
 						<LabelInput
 							{form}
-							form_name="ctwitter"
-							label="Company Twitter"
-							placeholder="Enter your company's twitter"
+							form_name="tags"
+							label="Tags"
+							placeholder="Enter tags"
 						/>
-						<LabelSelect
-							{form}
-							form_name="pricing_select"
-							label="Pricing Type"
-							content="Pricing"
-							contents={pricingContent}
-						></LabelSelect>
-						<LabelDatePicker
-							{form}
-							form_name="launch_date"
-							label="Launch Date"
-						></LabelDatePicker>
 						<LabelInput
 							{form}
-							form_name="starting_price"
-							label="Starting Price"
-							placeholder="Enter the starting price"
+							form_name="use_case_1"
+							label="Use Case 1"
+							placeholder="Use Case 1"
+						></LabelInput>
+						<LabelInput
+							{form}
+							form_name="use_case_2"
+							label="Use Case 2"
+							placeholder="Use Case 2"
+						></LabelInput>
+						<LabelInput
+							{form}
+							form_name="key_features"
+							label="Key Features"
+							placeholder="Key Features"
+						></LabelInput>
+					</div>
+				</div>
+			{:else if activeStep === 3}
+				<div
+					class="flex flex-col space-y-2 w-full"
+					in:receive={{ key: "step3" }}
+					out:send={{ key: "step3" }}
+				>
+					<div class="grid grid-cols-2 gap-4 w-full">
+						<LabelFileUpload
+							{form}
+							form_name="logo"
+							label="Logo of your Startup"
+							placeholder="Upload"
 						/>
+						<LabelFileUpload
+							{form}
+							form_name="icon"
+							label="Icon of your startup"
+							placeholder="Upload"
+						/>
+						<div class="col-span-2">
+							<LabelFileUpload
+								{form}
+								form_name="screenshots"
+								label="Screenshot of your startup"
+								placeholder="Upload"
+							/>
+						</div>
 					</div>
 				</div>
 			{/if}
