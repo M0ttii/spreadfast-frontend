@@ -8,6 +8,7 @@
 		DateFormatter,
 		type DateValue,
 		getLocalTimeZone,
+		parseDate,
 	} from "@internationalized/date"
 	import { cn } from "$lib/utils.js"
 	import { Button } from "$lib/components/ui/button/index.js"
@@ -22,14 +23,26 @@
 		dateStyle: "long",
 	})
 
-	let value: DateValue | undefined = undefined
+	let value: DateValue | undefined
+
+	const { form: formData, enhance } = form
+
+	$: value = $formData[form_name]
+		? typeof $formData[form_name] === "string"
+			? parseDate($formData[form_name])
+			: $formData[form_name]
+		: undefined
+
+	console.log("formData: ", $formData)
+	console.log("typeof formData: ", typeof $formData[form_name])
+	console.log("value: ", value)
 </script>
 
 <Form.Field {form} name={form_name} class="space-y-1">
 	<Form.Control let:attrs>
 		<Form.Label class="font-inter leading-3">{label}</Form.Label>
 		<Popover.Root>
-			<Popover.Trigger asChild let:builder>
+			<Popover.Trigger asChild let:builder {...attrs}>
 				<Button
 					variant="outline"
 					class={cn(
@@ -45,8 +58,16 @@
 				</Button>
 			</Popover.Trigger>
 			<Popover.Content class="w-auto p-0">
-				<Calendar bind:value initialFocus />
+				<Calendar
+					{value}
+					initialFocus
+					onValueChange={(v) => {
+						v && ($formData[form_name] = v.toString())
+						console.log(v?.toString())
+					}}
+				/>
 			</Popover.Content>
 		</Popover.Root>
+		<input hidden bind:value={$formData[form_name]} name={attrs.name} />
 	</Form.Control>
 </Form.Field>

@@ -12,8 +12,6 @@
 	export let placeholder: string
 
 	const { form: formData } = form
-	console.log("hallo")
-	console.log("FormData: ", $formData)
 </script>
 
 <Form.Field {form} name={form_name} class="space-y-1">

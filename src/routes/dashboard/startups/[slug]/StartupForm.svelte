@@ -13,7 +13,7 @@
 	import { Label } from "$lib/components/ui/label"
 	import GroupSelectWrapper from "$lib/components/ui/forms/GroupSelectWrapper.svelte"
 	import GroupSelect from "$lib/components/ui/forms/GroupSelect.svelte"
-	import { writable } from "svelte/store"
+	import { writable, type Writable } from "svelte/store"
 	import LabelWithDesc from "$lib/components/ui/forms/LabelWithDesc.svelte"
 	import { crossfade, fade, fly } from "svelte/transition"
 	import { quintOut } from "svelte/easing"
@@ -22,17 +22,14 @@
 	import LabelTextArea from "$lib/components/ui/forms/LabelTextArea.svelte"
 	import { categoryContent } from "./categoryContents"
 	import LabelFileUpload from "$lib/components/ui/forms/LabelFileUpload.svelte"
-	import type { SuperFormData } from "sveltekit-superforms/client"
+	import type { SuperForm } from "sveltekit-superforms"
 	import type { PageData } from "../$types"
 
 	export let data: PageData & PageDataProp
-	export let activeStep = 0
+	export let activeStep: Writable<number>
 	let selectedItem = writable("1")
 
-	const form = superForm(data.form, {
-		validators: zodClient(formSchema),
-		resetForm: false,
-	})
+	export let form: SuperForm<Infer<typeof formSchema>>
 
 	const { form: formData, enhance } = form
 
@@ -64,12 +61,18 @@
 </script>
 
 <div class="flex w-full">
-	<form method="POST" class="w-full" use:enhance>
+	<form
+		id="startupForm"
+		method="POST"
+		class="w-full"
+		use:enhance
+		enctype="multipart/form-data"
+	>
 		<div class="flex flex-col space-y-7 w-full">
 			{#if !$formData}
 				<p>No form data</p>
 			{/if}
-			{#if activeStep === 0 && $formData}
+			{#if $activeStep === 0 && $formData}
 				<div
 					class="flex flex-col space-y-7 w-full"
 					in:receive={{ key: "step0" }}
@@ -125,7 +128,7 @@
 						</div>
 					</div>
 				</div>
-			{:else if activeStep === 1}
+			{:else if $activeStep === 1}
 				<div
 					class="flex flex-col space-y-2 w-full"
 					in:receive={{ key: "step1" }}
@@ -190,7 +193,7 @@
 						/>
 					</div>
 				</div>
-			{:else if activeStep === 2}
+			{:else if $activeStep === 2}
 				<div
 					class="flex flex-col space-y-2 w-full"
 					in:receive={{ key: "step2" }}
@@ -253,7 +256,7 @@
 						></LabelInput>
 					</div>
 				</div>
-			{:else if activeStep === 3}
+			{:else if $activeStep === 3}
 				<div
 					class="flex flex-col space-y-2 w-full"
 					in:receive={{ key: "step3" }}

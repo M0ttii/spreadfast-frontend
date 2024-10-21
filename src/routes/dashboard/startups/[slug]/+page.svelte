@@ -9,8 +9,16 @@
 	import { superForm } from "sveltekit-superforms"
 	import { zodClient } from "sveltekit-superforms/adapters"
 	import { formSchema } from "./schema"
+	import { writable } from "svelte/store"
 
 	export let data: PageData & PageDataProp
+
+	const { supabase } = data
+
+	const form = superForm(data.form, {
+		validators: zodClient(formSchema),
+		resetForm: false,
+	})
 
 	const steps: Step[] = [
 		{ title: "Personal Information" },
@@ -20,18 +28,20 @@
 		{ title: "Finish" },
 	]
 
-	let activeStep = 0
+	let activeStep = writable(0)
 
 	function nextStep() {
-		activeStep += 1
+		$activeStep += 1
 	}
 
 	function prevStep() {
-		activeStep -= 1
+		$activeStep -= 1
 	}
 
 	function printResult() {
-		console.log(data.form)
+		const { form: formData, enhance } = form
+		console.log("Printing result", formData)
+		form.submit()
 	}
 </script>
 
@@ -45,14 +55,14 @@
 				<Label class="text-3xl font-semibold text-black/80 font-inter"
 					>Configuration</Label
 				>
-				<StartupForm {activeStep} {data}></StartupForm>
+				<StartupForm {form} {activeStep} {data}></StartupForm>
 			</div>
 			<div class="flex w-full justify-between">
 				<div class="flex">
 					<Button on:click={prevStep} variant="outline">Back</Button>
 				</div>
 				<div class="flex">
-					{#if activeStep === 3}
+					{#if $activeStep === 3}
 						<Button
 							class="bg-[#9139F6] font-inter font-semibold py-3 px-4"
 							on:click={printResult}>Finish</Button
