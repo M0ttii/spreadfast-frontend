@@ -12,10 +12,6 @@
 
 	export let data: PageData & PageDataProp
 
-	const form = superForm(data.form, {
-		validators: zodClient(formSchema),
-	})
-
 	const steps: Step[] = [
 		{ title: "Personal Information" },
 		{ title: "Business Information" },
@@ -23,12 +19,6 @@
 		{ title: "Illustrations" },
 		{ title: "Finish" },
 	]
-
-	const product =
-		data.products &&
-		data.products.find((product) => product.id.toString() === data.slug)
-
-	console.log(product)
 
 	let activeStep = 0
 
@@ -41,7 +31,6 @@
 	}
 
 	function printResult() {
-		form.submit()
 		console.log(data.form)
 	}
 </script>
@@ -56,7 +45,7 @@
 				<Label class="text-3xl font-semibold text-black/80 font-inter"
 					>Configuration</Label
 				>
-				<StartupForm {form} data={data.form} {activeStep}></StartupForm>
+				<StartupForm {activeStep} {data}></StartupForm>
 			</div>
 			<div class="flex w-full justify-between">
 				<div class="flex">

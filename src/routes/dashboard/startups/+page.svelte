@@ -1,24 +1,24 @@
 <script>
-  import Logo from "./(compontents)/Logo.svelte"
-  import StartupWidget from "./(compontents)/StartupWidget.svelte"
+	import Logo from "./(compontents)/Logo.svelte"
+	import StartupWidget from "./(compontents)/StartupWidget.svelte"
 
-  export let data
-  const { products } = data
-  console.log(data)
+	export let data
+	const { startups } = data
+	console.log(data)
 </script>
 
-{#if products != null}
-  <div class="grid grid-cols-4">
-    {#each products as product}
-      {#if product.url}
-        <StartupWidget
-          logo={Logo}
-          productID={product.id}
-          websiteUrl={product.url}
-        ></StartupWidget>
-      {/if}
-    {/each}
-  </div>
+{#if startups != null}
+	<div class="grid grid-cols-4">
+		{#each startups as startup}
+			{#if startup.url}
+				<StartupWidget
+					logo={Logo}
+					productID={startup.id}
+					websiteUrl={startup.url}
+				></StartupWidget>
+			{/if}
+		{/each}
+	</div>
 {:else}
-  <p class="text-white">No products found</p>
+	<p class="text-white">No products found</p>
 {/if}

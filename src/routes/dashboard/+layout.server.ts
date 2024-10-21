@@ -10,11 +10,11 @@ export const load: LayoutServerLoad = async ({ locals: { supabaseServiceRole, sa
 		redirect(303, "/login")
 	}
 
-	const d = await getProducts({ supabaseServiceRole: supabaseServiceRole, user })
-	const { products } = d
+	const d = await getStartups({ supabaseServiceRole: supabaseServiceRole, user })
+	const { startups } = d
 
 
-	return { session, products, cookies: cookies.getAll() }
+	return { session, startups, cookies: cookies.getAll() }
 }
 
 const getProducts = async ({
@@ -30,4 +30,19 @@ const getProducts = async ({
 		.eq("profile_id", user.id)
 
 	return { products, error }
+}
+
+const getStartups = async ({
+	supabaseServiceRole,
+	user,
+}: {
+	supabaseServiceRole: SupabaseClient<Database>
+	user: User
+}) => {
+	const { data: startups, error } = await supabaseServiceRole
+		.from("startups")
+		.select("*")
+		.eq("profile_id", user.id)
+
+	return { startups, error }
 }

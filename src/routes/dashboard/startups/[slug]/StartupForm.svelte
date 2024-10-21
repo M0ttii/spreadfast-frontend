@@ -22,14 +22,19 @@
 	import LabelTextArea from "$lib/components/ui/forms/LabelTextArea.svelte"
 	import { categoryContent } from "./categoryContents"
 	import LabelFileUpload from "$lib/components/ui/forms/LabelFileUpload.svelte"
+	import type { SuperFormData } from "sveltekit-superforms/client"
+	import type { PageData } from "../$types"
 
-	export let data: SuperValidated<Infer<FormSchema>>
-
-	export let form
-
-	const { form: formData, enhance } = form
+	export let data: PageData & PageDataProp
 	export let activeStep = 0
 	let selectedItem = writable("1")
+
+	const form = superForm(data.form, {
+		validators: zodClient(formSchema),
+		resetForm: false,
+	})
+
+	const { form: formData, enhance } = form
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const showNextStep = writable(false)
@@ -61,7 +66,10 @@
 <div class="flex w-full">
 	<form method="POST" class="w-full" use:enhance>
 		<div class="flex flex-col space-y-7 w-full">
-			{#if activeStep === 0}
+			{#if !$formData}
+				<p>No form data</p>
+			{/if}
+			{#if activeStep === 0 && $formData}
 				<div
 					class="flex flex-col space-y-7 w-full"
 					in:receive={{ key: "step0" }}
