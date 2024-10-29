@@ -1,10 +1,24 @@
 <script lang="ts">
+	import { goto } from "$app/navigation"
 	import { Badge } from "$lib/components/ui/badge"
 	import * as Card from "$lib/components/ui/card"
 	import { Label } from "$lib/components/ui/label"
+
+	export const listingId = $props()
+
+	function navigate() {
+		goto("/dashboard/listings/1")
+	}
+
+	function handleClick(fn: any) {
+		return function (this: any, event: any) {
+			fn.call(this, event)
+		}
+	}
 </script>
 
 <Card.Root
+	onclick={handleClick(navigate)}
 	class="transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:cursor-pointer"
 >
 	<Card.Content class="p-6">

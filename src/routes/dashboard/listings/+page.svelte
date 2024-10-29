@@ -5,6 +5,7 @@
 	import { Input } from "$lib/components/ui/input/index.js"
 	import { Label } from "$lib/components/ui/label/index.js"
 	import ListingWidget from "./(components)/ListingWidget.svelte"
+	import { goto } from "$app/navigation"
 </script>
 
 <Tabs.Root value="account">
@@ -25,8 +26,8 @@
 						>
 					</Card.Header>
 					<Card.Content class="flex flex-col gap-4">
-						<ListingWidget />
-						<ListingWidget />
+						<ListingWidget listingId={1} />
+						<ListingWidget listingId={2} />
 					</Card.Content>
 				</Card.Root>
 				<Card.Root>
@@ -36,8 +37,8 @@
 						>
 					</Card.Header>
 					<Card.Content class="flex flex-col gap-4">
-						<ListingWidget />
-						<ListingWidget />
+						<ListingWidget listingId={3} />
+						<ListingWidget listingId={4} />
 					</Card.Content>
 				</Card.Root>
 			</div>
