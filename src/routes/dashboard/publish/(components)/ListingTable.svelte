@@ -156,8 +156,7 @@
 		<Button
 			variant="outline"
 			size="sm"
-			disabled={Object.keys($selectedDataIds).length === 0}
-			on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
+			disabled={Object.keys($selectedDataIds).length === 0}>Next</Button
 		>
 	</div>
 </div>
