@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: `$:` is not allowed in runes mode, use `$derived` or `$effect` instead -->
+<!-- @migration-task Error while migrating Svelte code: `$:` is not allowed in runes mode, use `$derived` or `$effect` instead -->
 <script>
 	import { Button } from "$lib/components/ui/button"
 	import * as Card from "$lib/components/ui/card"
@@ -9,14 +11,16 @@
 		ShoppingCart,
 		Users,
 	} from "lucide-svelte"
-	import Sidebar from "./Sidebar.svelte"
+	import * as Sidebar from "$lib/components/ui/sidebar"
 	import { onMount } from "svelte"
 	import { invalidate } from "$app/navigation"
+	import { Separator } from "$lib/components/ui/separator"
+	import * as Breadcrumb from "$lib/components/ui/breadcrumb"
+	import NewSidebar from "./(components)/NewSidebar.svelte"
 
-	export let data
+	let { data, children } = $props()
 
-	let { supabase, session } = data
-	$: ({ supabase, session } = data)
+	let { supabase, session } = $derived(data)
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange(
@@ -40,20 +44,32 @@
 	/>
 </svelte:head>
 
-<div
-	class="bg-[#F9F9FA] grid min-h-screen gap-x-10 w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
->
-	<div class="flex flex-col">
-		<div class="flex-1 h-full">
-			<Sidebar></Sidebar>
-		</div>
-	</div>
-	<div class="flex flex-col">
-		<div
-			class="bg-[#FFFFFF] mt-5 border border-[#DFDFDF] rounded-lg h-16 mb-8"
-		></div>
-		<div class="w-full h-full">
-			<slot {data}></slot>
-		</div>
-	</div>
-</div>
+<Sidebar.Provider>
+	<NewSidebar />
+	<Sidebar.Inset>
+		<header class="flex h-16 shrink-0 items-center gap-2">
+			<div class="flex items-center gap-2 px-4">
+				<Sidebar.Trigger class="-ml-1" />
+				<Separator orientation="vertical" class="mr-2 h-4" />
+				<Breadcrumb.Root>
+					<Breadcrumb.List>
+						<Breadcrumb.Item class="hidden md:block">
+							<Breadcrumb.Link href="#"
+								>Building Your Application</Breadcrumb.Link
+							>
+						</Breadcrumb.Item>
+						<Breadcrumb.Separator class="hidden md:block" />
+						<Breadcrumb.Item>
+							<Breadcrumb.Page>Data Fetching</Breadcrumb.Page>
+						</Breadcrumb.Item>
+					</Breadcrumb.List>
+				</Breadcrumb.Root>
+			</div>
+		</header>
+		<main>
+			<div class="flex flex-1 flex-col gap-4 p-4">
+				{@render children?.()}
+			</div>
+		</main>
+	</Sidebar.Inset>
+</Sidebar.Provider>

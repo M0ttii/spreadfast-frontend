@@ -1,6 +1,6 @@
 <script lang="ts">
-	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-	import type { ComponentProps } from "svelte";
+	import * as Sidebar from "$lib/components/ui/sidebar"
+	import type { ComponentProps } from "svelte"
 
 	let {
 		ref = $bindable(null),
@@ -8,13 +8,13 @@
 		...restProps
 	}: {
 		items: {
-			title: string;
-			url: string;
+			title: string
+			url: string
 			// This should be `Component` after lucide-svelte updates types
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			icon: any;
-		}[];
-	} & ComponentProps<typeof Sidebar.Group> = $props();
+			icon: any
+		}[]
+	} & ComponentProps<typeof Sidebar.Group> = $props()
 </script>
 
 <Sidebar.Group bind:ref {...restProps}>

@@ -59,17 +59,17 @@
 			</div>
 			<div class="flex w-full justify-between">
 				<div class="flex">
-					<Button on:click={prevStep} variant="outline">Back</Button>
+					<Button onclick={prevStep} variant="outline">Back</Button>
 				</div>
 				<div class="flex">
 					{#if $activeStep === 3}
 						<Button
 							class="bg-[#9139F6] font-inter font-semibold py-3 px-4"
-							on:click={printResult}>Finish</Button
+							onclick={printResult}>Finish</Button
 						>
 					{:else}
 						<Button
-							on:click={nextStep}
+							onclick={nextStep}
 							class="bg-[#9139F6] font-inter font-semibold py-3 px-4"
 							>Continue <ChevronRight
 								strokeWidth={2.5}
