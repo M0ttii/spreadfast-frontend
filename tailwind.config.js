@@ -68,7 +68,7 @@ const config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans],
-				'geist': ['"Geist Sans"', 'sans-serif'],
+				geist: ['Geist Sans', 'sans-serif'],
 			},
 			keyframes: {
 				"accordion-down": {

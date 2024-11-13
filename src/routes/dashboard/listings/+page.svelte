@@ -6,18 +6,40 @@
 	import { Label } from "$lib/components/ui/label/index.js"
 	import ListingWidget from "./(components)/ListingWidget.svelte"
 	import { goto } from "$app/navigation"
+
+	export let data
+	const { listings } = data
+
+	type ListingsWithDirectories = {
+		created_at: string
+		id: number
+		productId: number | null
+		profile_id: string | null
+		state: string | null
+		directories: {
+			created_at: string
+			directory: string | null
+			display_name: string | null
+			id: number
+			logo_url: string | null
+			monthly_visits: number | null
+			url: string | null
+		}[]
+	}
+
+	console.log(listings)
 </script>
 
 <Tabs.Root value="account">
 	<div class="w-[400px]">
 		<Tabs.List class="grid w-full grid-cols-3">
-			<Tabs.Trigger value="account">All</Tabs.Trigger>
-			<Tabs.Trigger value="password">In Progress</Tabs.Trigger>
+			<Tabs.Trigger value="all">All</Tabs.Trigger>
+			<Tabs.Trigger value="progress">In Progress</Tabs.Trigger>
 			<Tabs.Trigger value="completed">Completed</Tabs.Trigger>
 		</Tabs.List>
 	</div>
 	<div class=" w-[800px]">
-		<Tabs.Content value="account">
+		<Tabs.Content value="all">
 			<div class="flex flex-col gap-4">
 				<Card.Root>
 					<Card.Header>
@@ -26,8 +48,9 @@
 						>
 					</Card.Header>
 					<Card.Content class="flex flex-col gap-4">
-						<ListingWidget listingId={1} />
-						<ListingWidget listingId={2} />
+						{#each listings ?? [] as listing}
+							<ListingWidget {listing} />
+						{/each}
 					</Card.Content>
 				</Card.Root>
 				<Card.Root>
@@ -36,14 +59,11 @@
 							>COMPLETED</Label
 						>
 					</Card.Header>
-					<Card.Content class="flex flex-col gap-4">
-						<ListingWidget listingId={3} />
-						<ListingWidget listingId={4} />
-					</Card.Content>
+					<Card.Content class="flex flex-col gap-4"></Card.Content>
 				</Card.Root>
 			</div>
 		</Tabs.Content>
-		<Tabs.Content value="password"></Tabs.Content>
+		<Tabs.Content value="progress"></Tabs.Content>
 		<Tabs.Content value="completed"></Tabs.Content>
 	</div>
 </Tabs.Root>

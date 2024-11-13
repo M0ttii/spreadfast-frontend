@@ -4,10 +4,27 @@
 	import * as Card from "$lib/components/ui/card"
 	import { Label } from "$lib/components/ui/label"
 
-	export const listingId = $props()
+	export const listing: ListingsWithDirectories = $props()
 
 	function navigate() {
 		goto("/dashboard/listings/1")
+	}
+
+	type ListingsWithDirectories = {
+		created_at: string
+		id: number
+		productId: number | null
+		profile_id: string | null
+		state: string | null
+		directories: {
+			created_at: string
+			directory: string | null
+			display_name: string | null
+			id: number
+			logo_url: string | null
+			monthly_visits: number | null
+			url: string | null
+		}[]
 	}
 
 	function handleClick(fn: any) {

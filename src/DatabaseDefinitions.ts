@@ -141,21 +141,24 @@ export type Database = {
       listings: {
         Row: {
           created_at: string
-          directories: Json | null
           id: number
           productId: number | null
+          profile_id: string | null
+          state: string | null
         }
         Insert: {
           created_at?: string
-          directories?: Json | null
           id?: number
           productId?: number | null
+          profile_id?: string | null
+          state?: string | null
         }
         Update: {
           created_at?: string
-          directories?: Json | null
           id?: number
           productId?: number | null
+          profile_id?: string | null
+          state?: string | null
         }
         Relationships: [
           {
@@ -163,6 +166,59 @@ export type Database = {
             columns: ["productId"]
             isOneToOne: false
             referencedRelation: "user_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listings_directories: {
+        Row: {
+          created_at: string
+          directory_id: number | null
+          id: number
+          listing_id: number | null
+          profile_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          directory_id?: number | null
+          id?: number
+          listing_id?: number | null
+          profile_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          directory_id?: number | null
+          id?: number
+          listing_id?: number | null
+          profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_directories_directory_id_fkey"
+            columns: ["directory_id"]
+            isOneToOne: false
+            referencedRelation: "directories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_directories_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_directories_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

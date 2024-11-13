@@ -16,31 +16,17 @@
 		value: string
 		label: string
 	}
-
-	$: selectedPricingType = $formData[form_name]
-		? {
-				label: $formData[form_name],
-				value: $formData[form_name],
-			}
-		: undefined
 </script>
 
 <Form.Field {form} name={form_name} class="space-y-1">
 	<Form.Control let:attrs>
 		<Form.Label class="font-inter leading-3">{label}</Form.Label>
-		<Select.Root
-			portal={null}
-			selected={selectedPricingType}
-			onSelectedChange={(v) => {
-				v && ($formData[form_name] = v.value)
-			}}
-		>
-			<Select.Trigger class="w-[180px]" {...attrs}>
-				<Select.Value placeholder="Select a {content}" />
+		<Select.Root type="single" bind:value={$formData[form_name]}>
+			<Select.Trigger class="w-[180px]">
+				{$formData[form_name] ?? "Select a {content}"}
 			</Select.Trigger>
 			<Select.Content class={customClass}>
 				<Select.Group>
-					<Select.Label>{content}</Select.Label>
 					{#each contents as fruit}
 						<Select.Item value={fruit.value} label={fruit.label}
 							>{fruit.label}</Select.Item
@@ -49,6 +35,6 @@
 				</Select.Group>
 			</Select.Content>
 		</Select.Root>
-		<input hidden bind:value={$formData[form_name]} name={attrs.name} />
+		<input hidden bind:value={$formData[form_name]} />
 	</Form.Control>
 </Form.Field>

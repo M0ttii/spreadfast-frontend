@@ -1,4 +1,5 @@
 <script>
+	import Button from "$lib/components/ui/button/button.svelte"
 	import Logo from "./(compontents)/Logo.svelte"
 	import StartupWidget from "./(compontents)/StartupWidget.svelte"
 
