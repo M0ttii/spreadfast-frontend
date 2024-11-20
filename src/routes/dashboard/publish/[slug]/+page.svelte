@@ -1,12 +1,15 @@
 <script>
-	import ListingTable from "../(components)/ListingTable.svelte"
+	import { columns } from "../(components)/table/columns"
+	import DataTable from "../(components)/table/data-table.svelte"
 
-	export let data
+	let { data } = $props()
 	let { directories } = data
+
+	directories = directories ?? []
 </script>
 
 <div class="flex w-full h-full">
 	<div class="flex w-full p-52 items-center">
-		<ListingTable {directories}></ListingTable>
+		<DataTable {directories} {columns} />
 	</div>
 </div>
